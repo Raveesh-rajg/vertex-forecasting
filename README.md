@@ -1,4 +1,4 @@
-# Demand Forecasting — measured backtests + Cloud Run serving (MLOps-lite)
+# Demand Forecasting & Serving | Measured backtests and Cloud Run
 
 Monthly demand forecasting on a real public benchmark (Quebec car sales,
 108 months, strong seasonality + trend), with the part most forecasting

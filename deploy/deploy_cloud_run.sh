@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# Cloud Run deploy — scales to zero, ~$0 idle for a portfolio service.
+# Run from the repository root after approving a deployment budget.
 set -euo pipefail
-PROJECT=data-portfolio-497401
+: "${GCP_PROJECT:?Set GCP_PROJECT}"
 gcloud run deploy demand-forecast \
-  --source . \
-  --project $PROJECT \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --memory 512Mi --cpu 1 --max-instances 2
-# smoke:
-# curl "$(gcloud run services describe demand-forecast --region us-central1 --format 'value(status.url)')/forecast?h=6"
+  --source . --project "$GCP_PROJECT" --region "${GCP_REGION:-us-central1}" \
+  --no-allow-unauthenticated --memory 512Mi --cpu 1 \
+  --min-instances 0 --max-instances 1 --concurrency 8 --timeout 60
+# Build, artifact storage, requests and egress can incur charges.
+# Obtain the URL with gcloud run services describe and call using an identity token.
